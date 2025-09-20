@@ -9,27 +9,31 @@ const initialTodos: TodoType[] = [
   { id: 3, title: "散歩", done: false },
 ];
 
+const getSeq = (() => {
+  let id = initialTodos.length;
+  return () => {
+    id += 1;
+    return id;
+  };
+})();
+
 function App() {
   const [todoTitle, setTodoTitle] = useState("");
   const [todos, setTodos] = useState<TodoType[]>(initialTodos);
 
-  const handleSubmit = useCallback(
-    (e: React.FormEvent) => {
-      e.preventDefault();
-      if (todoTitle.trim() === "") return;
+  const handleAddTodo = useCallback(() => {
+    if (todoTitle.trim() === "") return;
 
-      setTodos((prevTodos) => {
-        const newTodo: TodoType = {
-          id: prevTodos.length + 1,
-          title: todoTitle,
-          done: false,
-        };
-        return [...prevTodos, newTodo];
-      });
-      setTodoTitle("");
-    },
-    [todoTitle]
-  );
+    setTodos((prevTodos) => {
+      const newTodo: TodoType = {
+        id: getSeq(),
+        title: todoTitle,
+        done: false,
+      };
+      return [...prevTodos, newTodo];
+    });
+    setTodoTitle("");
+  }, [todoTitle]);
 
   const handleTodoTitleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,7 +47,7 @@ function App() {
       <div className="max-w-md mx-auto mt-10 p-4 border border-gray-300 rounded">
         <h1 className="text-2xl font-bold mb-4">TODOリスト</h1>
         <TodoList todos={todos} setTodos={setTodos} />
-        <form className="mt-4" onSubmit={handleSubmit}>
+        <div className="mt-4">
           <input
             type="text"
             placeholder="追加するタスク"
@@ -52,12 +56,13 @@ function App() {
             onChange={handleTodoTitleChange}
           />
           <button
-            type="submit"
+            type="button"
             className="bg-blue-500 text-white rounded px-4 py-1 ml-2"
+            onClick={handleAddTodo}
           >
             追加
           </button>
-        </form>
+        </div>
       </div>
     </>
   );
