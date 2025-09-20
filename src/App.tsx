@@ -46,7 +46,6 @@ function App() {
     <>
       <div className="max-w-md mx-auto mt-10 p-4 border border-gray-300 rounded">
         <h1 className="text-2xl font-bold mb-4">TODOリスト</h1>
-        <TodoList todos={todos} setTodos={setTodos} />
         <div className="mt-4">
           <input
             type="text"
@@ -63,6 +62,7 @@ function App() {
             追加
           </button>
         </div>
+        <TodoList todos={todos} setTodos={setTodos} />
       </div>
     </>
   );
@@ -98,6 +98,9 @@ const TodoList = React.memo(({ todos, setTodos }: TodoListProps) => {
 
   return (
     <div>
+      {todos.length === 0 && (
+        <p className="mt-4 text-gray-500">TODOを追加してください。</p>
+      )}
       {todos.map((todo) => (
         <TodoItem
           key={todo.id}
