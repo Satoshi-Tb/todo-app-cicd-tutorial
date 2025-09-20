@@ -54,16 +54,15 @@ function App() {
   );
 }
 
-const TodoList = ({
-  todos,
-  setTodos,
-}: {
+type TodoListProps = {
   todos: TodoType[];
   setTodos: React.Dispatch<React.SetStateAction<TodoType[]>>;
-}) => {
-  useEffect(() => {
-    console.log("レンダリングTODO LIST");
-  });
+};
+
+const TodoList = React.memo(({ todos, setTodos }: TodoListProps) => {
+  // useEffect(() => {
+  //   console.log("レンダリングTODO LIST");
+  // });
 
   const handleTodoDone = useCallback(
     (id: number) => {
@@ -79,38 +78,37 @@ const TodoList = ({
   return (
     <div>
       {todos.map((todo) => (
-        <TodoItem
-          key={todo.id}
-          todo={todo}
-          handleDone={() => handleTodoDone(todo.id)}
-        />
+        <TodoItem key={todo.id} todo={todo} handleDone={handleTodoDone} />
       ))}
     </div>
   );
+});
+
+type TodoItemProps = {
+  todo: TodoType;
+  handleDone: (id: number) => void;
 };
 
-const TodoItem = ({
-  todo,
-  handleDone,
-}: {
-  todo: TodoType;
-  handleDone?: () => void;
-}) => {
-  useEffect(() => {
-    console.log("レンダリングTODO ITEM", todo.id);
-  });
+const TodoItem = React.memo(({ todo, handleDone }: TodoItemProps) => {
+  // useEffect(() => {
+  //   console.log("レンダリングTODO ITEM", todo.id);
+  // });
+
+  const handleTodoDone = useCallback(() => {
+    handleDone(todo.id);
+  }, [handleDone, todo.id]);
 
   return (
     <div className="flex items-center mt-4">
       <input
         type="checkbox"
         checked={todo.done}
-        onChange={handleDone}
+        onChange={handleTodoDone}
         className="mr-2"
       />
       <span className={todo.done ? "line-through" : ""}>{todo.title}</span>
     </div>
   );
-};
+});
 
 export default App;
