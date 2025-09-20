@@ -9,12 +9,6 @@ function App() {
   return (
     <>
       <div>
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          onClick={() => alert("ボタンクリック")}
-        >
-          追加
-        </button>
         {todos.map((todo) => (
           <div key={todo.id} className="flex items-center mt-4">
             <input
@@ -28,6 +22,19 @@ function App() {
             </span>
           </div>
         ))}
+        <form>
+          <input
+            type="text"
+            placeholder="追加するタスク"
+            className="border border-gray-300 rounded px-2 py-1 mt-4"
+          />
+          <button
+            type="submit"
+            className="bg-blue-500 text-white rounded px-4 py-1 ml-2"
+          >
+            追加
+          </button>
+        </form>
       </div>
     </>
   );
