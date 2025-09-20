@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./App.css";
 
 type TodoType = { id: number; title: string; done: boolean };
@@ -15,20 +15,9 @@ function App() {
 
   return (
     <>
-      <div>
-        {todos.map((todo) => (
-          <TodoItem
-            key={todo.id}
-            todo={todo}
-            handleDone={() => {
-              setTodos((prevTodos) =>
-                prevTodos.map((t) =>
-                  t.id === todo.id ? { ...t, done: !t.done } : t
-                )
-              );
-            }}
-          />
-        ))}
+      <div className="max-w-md mx-auto mt-10 p-4 border border-gray-300 rounded">
+        <h1 className="text-2xl font-bold mb-4">TODOリスト</h1>
+        <TodoList todos={todos} setTodos={setTodos} />
         <form
           className="mt-4"
           onSubmit={(e) => {
@@ -65,13 +54,52 @@ function App() {
   );
 }
 
+const TodoList = ({
+  todos,
+  setTodos,
+}: {
+  todos: TodoType[];
+  setTodos: React.Dispatch<React.SetStateAction<TodoType[]>>;
+}) => {
+  useEffect(() => {
+    console.log("レンダリングTODO LIST");
+  });
+
+  const handleTodoDone = useCallback(
+    (id: number) => {
+      setTodos((prevTodos) =>
+        prevTodos.map((todo) =>
+          todo.id === id ? { ...todo, done: !todo.done } : todo
+        )
+      );
+    },
+    [setTodos]
+  );
+
+  return (
+    <div>
+      {todos.map((todo) => (
+        <TodoItem
+          key={todo.id}
+          todo={todo}
+          handleDone={() => handleTodoDone(todo.id)}
+        />
+      ))}
+    </div>
+  );
+};
+
 const TodoItem = ({
   todo,
   handleDone,
 }: {
   todo: TodoType;
-  handleDone: () => void;
+  handleDone?: () => void;
 }) => {
+  useEffect(() => {
+    console.log("レンダリングTODO ITEM", todo.id);
+  });
+
   return (
     <div className="flex items-center mt-4">
       <input
