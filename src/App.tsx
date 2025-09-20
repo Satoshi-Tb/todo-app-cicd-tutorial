@@ -13,34 +13,43 @@ function App() {
   const [todoTitle, setTodoTitle] = useState("");
   const [todos, setTodos] = useState<TodoType[]>(initialTodos);
 
+  const handleSubmit = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
+      if (todoTitle.trim() === "") return;
+
+      setTodos((prevTodos) => {
+        const newTodo: TodoType = {
+          id: prevTodos.length + 1,
+          title: todoTitle,
+          done: false,
+        };
+        return [...prevTodos, newTodo];
+      });
+      setTodoTitle("");
+    },
+    [todoTitle]
+  );
+
+  const handleTodoTitleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setTodoTitle(e.target.value);
+    },
+    []
+  );
+
   return (
     <>
       <div className="max-w-md mx-auto mt-10 p-4 border border-gray-300 rounded">
         <h1 className="text-2xl font-bold mb-4">TODOリスト</h1>
         <TodoList todos={todos} setTodos={setTodos} />
-        <form
-          className="mt-4"
-          onSubmit={(e) => {
-            e.preventDefault();
-            if (todoTitle.trim() === "") return;
-
-            setTodos((prevTodos) => {
-              const newTodo: TodoType = {
-                id: prevTodos.length + 1,
-                title: todoTitle,
-                done: false,
-              };
-              return [...prevTodos, newTodo];
-            });
-            setTodoTitle("");
-          }}
-        >
+        <form className="mt-4" onSubmit={handleSubmit}>
           <input
             type="text"
             placeholder="追加するタスク"
             className="border border-gray-300 rounded px-2 py-1 mt-4"
             value={todoTitle}
-            onChange={(e) => setTodoTitle(e.target.value)}
+            onChange={handleTodoTitleChange}
           />
           <button
             type="submit"
