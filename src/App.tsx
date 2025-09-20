@@ -17,23 +17,17 @@ function App() {
     <>
       <div>
         {todos.map((todo) => (
-          <div key={todo.id} className="flex items-center mt-4">
-            <input
-              type="checkbox"
-              checked={todo.done}
-              onChange={() => {
-                setTodos((prevTodos) =>
-                  prevTodos.map((t) =>
-                    t.id === todo.id ? { ...t, done: !t.done } : t
-                  )
-                );
-              }}
-              className="mr-2"
-            />
-            <span className={todo.done ? "line-through" : ""}>
-              {todo.title}
-            </span>
-          </div>
+          <TodoItem
+            key={todo.id}
+            todo={todo}
+            handleDone={() => {
+              setTodos((prevTodos) =>
+                prevTodos.map((t) =>
+                  t.id === todo.id ? { ...t, done: !t.done } : t
+                )
+              );
+            }}
+          />
         ))}
         <form
           className="mt-4"
@@ -70,5 +64,25 @@ function App() {
     </>
   );
 }
+
+const TodoItem = ({
+  todo,
+  handleDone,
+}: {
+  todo: TodoType;
+  handleDone: () => void;
+}) => {
+  return (
+    <div className="flex items-center mt-4">
+      <input
+        type="checkbox"
+        checked={todo.done}
+        onChange={handleDone}
+        className="mr-2"
+      />
+      <span className={todo.done ? "line-through" : ""}>{todo.title}</span>
+    </div>
+  );
+};
 
 export default App;
