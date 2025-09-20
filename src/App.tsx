@@ -53,6 +53,7 @@ function App() {
             className="border border-gray-300 rounded px-2 py-1 mt-4"
             value={todoTitle}
             onChange={handleTodoTitleChange}
+            aria-label="新しいTODOを入力"
           />
           <button
             type="button"
