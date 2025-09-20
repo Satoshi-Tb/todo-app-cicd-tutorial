@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import "./App.css";
 
 type TodoType = { id: number; title: string; done: boolean };
@@ -96,10 +96,20 @@ const TodoList = React.memo(({ todos, setTodos }: TodoListProps) => {
     [setTodos]
   );
 
+  const completedCount = useMemo(
+    () => todos.filter((todo) => todo.done).length,
+    [todos]
+  );
+
   return (
     <div>
       {todos.length === 0 && (
         <p className="mt-4 text-gray-500">TODOを追加してください。</p>
+      )}
+      {todos.length > 0 && (
+        <p className="mt-4 text-gray-700">
+          完了済み: {completedCount} / {todos.length}
+        </p>
       )}
       {todos.map((todo) => (
         <TodoItem
