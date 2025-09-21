@@ -21,15 +21,23 @@ export const TodoItem = React.memo(
       handleDelete(todo.id);
     }, [handleDelete, todo.id]);
 
+    const checkboxId = `todo-${todo.id}`;
+
     return (
       <div className="flex items-center mt-4">
         <input
+          id={checkboxId}
           type="checkbox"
           checked={todo.done}
           onChange={handleTodoDone}
-          className="mr-2"
+          className="mr-2 cursor-pointer"
         />
-        <span className={todo.done ? "line-through" : ""}>{todo.title}</span>
+        <label
+          htmlFor={checkboxId}
+          className={`${todo.done ? "line-through" : ""} hover:cursor-pointer select-none`}
+        >
+          {todo.title}
+        </label>
         <button
           className="ml-auto bg-red-500 text-white rounded px-2 py-1 hover:cursor-pointer"
           onClick={handleTodoDelete}
