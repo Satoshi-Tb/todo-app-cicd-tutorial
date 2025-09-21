@@ -32,7 +32,7 @@ export const TodoInput = React.memo(({ handleAddTodo }: TodoInputProps) => {
         />
         <button
           type="button"
-          className="bg-blue-500 text-white rounded px-4 py-1 ml-2"
+          className="bg-blue-500 text-white rounded px-4 py-1 ml-2 hover:cursor-pointer"
           onClick={onAddTodo}
         >
           追加

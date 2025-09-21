@@ -31,7 +31,7 @@ export const TodoItem = React.memo(
         />
         <span className={todo.done ? "line-through" : ""}>{todo.title}</span>
         <button
-          className="ml-auto bg-red-500 text-white rounded px-2 py-1"
+          className="ml-auto bg-red-500 text-white rounded px-2 py-1 hover:cursor-pointer"
           onClick={handleTodoDelete}
         >
           削除
