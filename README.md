@@ -1,69 +1,39 @@
-# React + TypeScript + Vite
+# TODO リストアプリ（React + TypeScript + Vite）
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## アプリ概要
 
-Currently, two official plugins are available:
+このリポジトリは、React（TypeScript）と Vite で作成したシンプルな TODO 管理アプリです。最小構成で実装しつつ、実用的な UI/UX とテストを備えています。
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 主な機能
 
-## Expanding the ESLint configuration
+- TODO の追加：テキスト入力欄と「追加」ボタンで新規作成（空文字・空白のみは無視）
+- 完了/未完の切替：各項目のチェックボックスでトグル
+- 削除：各項目の「削除」ボタンで項目を削除
+- 集計表示：「完了済み: X / Y」をヘッダ下に表示
+- 初期データ：サンプル TODO データがあらかじめ投入されています
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 技術スタック
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- フロントエンド：React 19, TypeScript, Vite
+- スタイル：Tailwind CSS
+- テスト：Vitest, @testing-library/react, @testing-library/jest-dom
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## セットアップと実行
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+前提：Node.js 18+ を推奨
+
+```bash
+npm install
+npm run dev    # 開発サーバ起動
+npm run test   # テスト実行（Vitest）
+npm run build  # 本番ビルド
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 画面概要
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- 画面上部に「TODO リスト」の見出し
+- 入力欄に TODO を入力して「追加」を押すと一覧に表示
+- 各項目のチェックボックスで完了状態を切替、右端の「削除」で項目削除
+- 一覧の上に「完了済み: X / Y」を表示
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
