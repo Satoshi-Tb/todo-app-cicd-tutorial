@@ -33,22 +33,10 @@ npm run test   # テスト実行（Vitest）
 npm run build  # 本番ビルド
 ```
 
-## CI/CD（Firebase Hosting）
+## CI/CD
 
-- ワークフロー：`.github/workflows/pipeline.yaml`
-- トリガー：`main` ブランチへの `push`
-- フェーズ：
-  - Build（Vite で `dist/` を生成し、アーティファクトとして保存）
-  - Test（Vitest 実行）
-  - Deploy（ビルド成果物を取得し Firebase Hosting にデプロイ）
-- Firebase 設定：
-  - `firebase.json` — `public: "dist"`、SPA のため `/** → /index.html` に rewrite
-  - `.firebaserc` — デフォルトプロジェクト：`todo-cicd-19260`
-- Secrets（GitHub リポジトリ）：
-  - `GOOGLE_APPLICATION_CREDENTIALS` — サービスアカウント JSON を Base64 文字列化して保存
-    - 例）`base64 -w0 service-account.json > encoded.txt`（macOS は `-w0` 省略可）
-  - サービスアカウントには少なくとも「Firebase Hosting Admin」権限を付与
-- デプロイ：ワークフロー内で `firebase deploy --only hosting` を実行（`.firebaserc` のデフォルトプロジェクトを使用）
+- GitHub Actions により、`main` への push をトリガーに Build → Test → Deploy を自動実行します。
+- デプロイ先は Firebase Hosting です。
 
 ## 画面概要
 
