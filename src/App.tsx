@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import "./App.css";
 
 type TodoType = { id: number; title: string; done: boolean };
