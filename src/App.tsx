@@ -28,12 +28,28 @@ function App() {
     });
   }, []);
 
+  const onToggleTodo = useCallback((id: number) => {
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) =>
+        todo.id === id ? { ...todo, done: !todo.done } : todo
+      )
+    );
+  }, []);
+
+  const onDeleteTotod = useCallback((id: number) => {
+    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+  }, []);
+
   return (
     <>
       <div className="max-w-md mx-auto mt-10 p-4 border border-gray-300 rounded">
         <h1 className="text-2xl font-bold mb-4">TODOリスト</h1>
         <TodoInput handleAddTodo={handleAddTodo} />
-        <TodoList todos={todos} setTodos={setTodos} />
+        <TodoList
+          todos={todos}
+          onToggleTodo={onToggleTodo}
+          onDeleteTotod={onDeleteTotod}
+        />
       </div>
     </>
   );
