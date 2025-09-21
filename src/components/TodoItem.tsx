@@ -24,7 +24,7 @@ export const TodoItem = React.memo(
     const checkboxId = `todo-${todo.id}`;
 
     return (
-      <div className="flex items-center mt-4">
+      <div className="flex items-center mt-2 mb-2 border border-gray-200 rounded-lg p-2">
         <input
           id={checkboxId}
           type="checkbox"
@@ -34,7 +34,9 @@ export const TodoItem = React.memo(
         />
         <label
           htmlFor={checkboxId}
-          className={`${todo.done ? "line-through" : ""} hover:cursor-pointer select-none`}
+          className={`${
+            todo.done ? "line-through" : ""
+          } hover:cursor-pointer select-none`}
         >
           {todo.title}
         </label>

@@ -24,7 +24,7 @@ export const TodoInput = React.memo(({ handleAddTodo }: TodoInputProps) => {
       <div className="mt-4">
         <input
           type="text"
-          placeholder="新しいTODOを入力..."
+          placeholder="新しいTODOを入力"
           className="border border-gray-300 rounded px-2 py-1 mt-4"
           value={todoTitle}
           onChange={handleTodoTitleChange}
