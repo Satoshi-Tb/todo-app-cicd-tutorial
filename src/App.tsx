@@ -1,8 +1,7 @@
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import "./App.css";
 import { TodoInput } from "./components/TodoInput";
-
-type TodoType = { id: number; title: string; done: boolean };
+import type { TodoType } from "./types/todo";
 
 const initialTodos: TodoType[] = [
   { id: 1, title: "買い物", done: false },
