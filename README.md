@@ -12,6 +12,10 @@
 - 集計表示：「完了済み: X / Y」をヘッダ下に表示
 - 初期データ：サンプル TODO データがあらかじめ投入されています
 
+### 制限事項
+
+- 永続機能はありません。データはクライアントメモリのみで管理し、ページ更新や再起動で初期状態に戻ります。
+
 ### 技術スタック
 
 - フロントエンド：React 19, TypeScript, Vite
@@ -28,6 +32,23 @@ npm run dev    # 開発サーバ起動
 npm run test   # テスト実行（Vitest）
 npm run build  # 本番ビルド
 ```
+
+## CI/CD（Firebase Hosting）
+
+- ワークフロー：`.github/workflows/pipeline.yaml`
+- トリガー：`main` ブランチへの `push`
+- フェーズ：
+  - Build（Vite で `dist/` を生成し、アーティファクトとして保存）
+  - Test（Vitest 実行）
+  - Deploy（ビルド成果物を取得し Firebase Hosting にデプロイ）
+- Firebase 設定：
+  - `firebase.json` — `public: "dist"`、SPA のため `/** → /index.html` に rewrite
+  - `.firebaserc` — デフォルトプロジェクト：`todo-cicd-19260`
+- Secrets（GitHub リポジトリ）：
+  - `GOOGLE_APPLICATION_CREDENTIALS` — サービスアカウント JSON を Base64 文字列化して保存
+    - 例）`base64 -w0 service-account.json > encoded.txt`（macOS は `-w0` 省略可）
+  - サービスアカウントには少なくとも「Firebase Hosting Admin」権限を付与
+- デプロイ：ワークフロー内で `firebase deploy --only hosting` を実行（`.firebaserc` のデフォルトプロジェクトを使用）
 
 ## 画面概要
 
