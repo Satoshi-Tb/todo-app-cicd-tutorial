@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, useState } from "react";
 import "./App.css";
+import { TodoInput } from "./components/TodoInput";
 
 type TodoType = { id: number; title: string; done: boolean };
 
@@ -18,51 +19,26 @@ const getSeq = (() => {
 })();
 
 function App() {
-  const [todoTitle, setTodoTitle] = useState("");
   const [todos, setTodos] = useState<TodoType[]>(initialTodos);
 
-  const handleAddTodo = useCallback(() => {
-    if (todoTitle.trim() === "") return;
+  const handleAddTodo = useCallback((title: string) => {
+    if (title.trim() === "") return;
 
     setTodos((prevTodos) => {
       const newTodo: TodoType = {
         id: getSeq(),
-        title: todoTitle,
+        title: title.trim(),
         done: false,
       };
       return [...prevTodos, newTodo];
     });
-    setTodoTitle("");
-  }, [todoTitle]);
-
-  const handleTodoTitleChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setTodoTitle(e.target.value);
-    },
-    []
-  );
+  }, []);
 
   return (
     <>
       <div className="max-w-md mx-auto mt-10 p-4 border border-gray-300 rounded">
         <h1 className="text-2xl font-bold mb-4">TODOリスト</h1>
-        <div className="mt-4">
-          <input
-            type="text"
-            placeholder="新しいTODOを入力..."
-            className="border border-gray-300 rounded px-2 py-1 mt-4"
-            value={todoTitle}
-            onChange={handleTodoTitleChange}
-            aria-label="新しいTODOを入力"
-          />
-          <button
-            type="button"
-            className="bg-blue-500 text-white rounded px-4 py-1 ml-2"
-            onClick={handleAddTodo}
-          >
-            追加
-          </button>
-        </div>
+        <TodoInput handleAddTodo={handleAddTodo} />
         <TodoList todos={todos} setTodos={setTodos} />
       </div>
     </>
