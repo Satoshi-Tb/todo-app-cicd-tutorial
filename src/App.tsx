@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import "./App.css";
 import { TodoInput } from "./components/TodoInput";
 
@@ -10,16 +10,10 @@ const initialTodos: TodoType[] = [
   { id: 3, title: "散歩", done: false },
 ];
 
-const getSeq = (() => {
-  let id = initialTodos.length;
-  return () => {
-    id += 1;
-    return id;
-  };
-})();
-
 function App() {
   const [todos, setTodos] = useState<TodoType[]>(initialTodos);
+  const nextId = useRef(initialTodos.length);
+  const getSeq = () => ++nextId.current;
 
   const handleAddTodo = useCallback((title: string) => {
     if (title.trim() === "") return;
