@@ -97,9 +97,9 @@ jobs:
     name: OSV Vulnerability Scan
     runs-on: ubuntu-latest
     permissions:
-      actions: read
-      contents: read
-      security-events: write
+      actions: read          # 最小権限: アクション実行に必要な読み取りのみ
+      contents: read         # 最小権限: リポジトリ内容を checkout するため
+      security-events: write # SARIF を Code Scanning へ送信するために必須
 
     steps:
       - name: Checkout Code
