@@ -96,35 +96,28 @@ jobs:
   security-scan:
     name: OSV Vulnerability Scan
     runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-      - name: Install OSV-Scanner
-        run: |
-          curl -sSfL "https://github.com/google/osv-scanner/releases/latest/download/osv-scanner_linux_amd64" -o osv-scanner
-          chmod +x osv-scanner
-          sudo mv osv-scanner /usr/local/bin/osv-scanner
-
-      - name: Run OSV-Scanner (JSON & SARIF)
+      - name: Run OSV-Scanner official action
         id: osvscan
-        continue-on-error: true
-        run: |
-          osv-scanner --lockfile=package-lock.json --format json  --output osv-report.json .
-          osv-scanner --lockfile=package-lock.json --format sarif --output osv-report.sarif .
+        uses: google/osv-scanner-action@v2.3.1
+        with:
+          scan-args: |-
+            --lockfile=package-lock.json
+          results-file-name: osv-report.sarif
+          upload-sarif: true
+          fail-on-vuln: false
 
-      - name: Upload OSV artifacts
+      - name: Upload OSV SARIF artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: osv-report
-          path: |
-            osv-report.json
-            osv-report.sarif
+          path: osv-report.sarif
           retention-days: 1
-
-      - name: Upload SARIF to GitHub Security
-        if: always()
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: osv-report.sarif
