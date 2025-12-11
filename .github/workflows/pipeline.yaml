@@ -92,3 +92,37 @@ jobs:
       - name: Remove private key
         if: always()
         run: rm $HOME/private-key.json
+
+  security-scan:
+    name: OSV Vulnerability Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install OSV-Scanner
+        uses: google/osv-scanner-action@v1
+
+      - name: Run OSV-Scanner (JSON & SARIF)
+        id: osvscan
+        continue-on-error: true
+        run: |
+          osv-scanner --lockfile=package-lock.json --format json  --output osv-report.json .
+          osv-scanner --lockfile=package-lock.json --format sarif --output osv-report.sarif .
+
+      - name: Upload OSV artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: osv-report
+          path: |
+            osv-report.json
+            osv-report.sarif
+          retention-days: 1
+
+      - name: Upload SARIF to GitHub Security
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: osv-report.sarif
